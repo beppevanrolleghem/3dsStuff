@@ -1,11 +1,11 @@
 beep = love.audio.newSource("beep.wav", "static")
-
+death = love.audio.newSource("death.wav", "static")
 --dif determines fps, this can make the game faster and therefore harder
 diff = 10
 frames = 0
 fps = 1/diff
-
-
+hgrid = 20
+vgrid = 14
 bgCol = {
 	r = 0,
 	g = 0,
@@ -15,8 +15,7 @@ bgCol = {
 player = {
 	x = 1,
 	y = 1,
-	w = 20,
-	s = 20,
+	w = love.graphics.getWidth()/hgrid,
 	xvel = 0,
 	yvel = 0,
 	mode = "fill",
@@ -25,7 +24,13 @@ player = {
 		g = 1,
 		b = 1
 	},
-	blocks = {}
+	blocks = {
+		
+	 },
+	tar = {
+		x = 8,
+		y = 3,
+	}
 }
 
 --[[
@@ -64,41 +69,77 @@ end
 function player:hardreset()
 	self.xvel = 0
 	self.yvel = 0
-	self.x = 1
-	self.y = 1
+	self.x = 10
+	self.y = 10
 	self.blocks = {}
 end
 
 function player:move(xvel, yvel)
-	self.xvel = xvel
-	self.yvel = yvel
+	if self.xvel == -xvel and self.yvel == -yvel then
+
+	else
+		self.xvel = xvel
+		self.yvel = yvel
+	end
 end
 
 function player:update()
-	if self.x > love.graphics.getWidth() - self.w then
+	if self.x > hgrid then
 		self.x = 0
 	end
 	if self.x < 0 then
-		self.x = love.graphics.getWidth()-self.w
+		self.x = hgrid
 	end
-	if self.y > love.graphics.getHeight() - self.w then
+	if self.y > vgrid then
 		self.y = 0
 	end
-
 	if self.y < 0 then
-		self.y = love.graphics.getHeight() - self.w
+		self.y = vgrid
 	end
-	self.x = self.x+self.xvel*self.s
-	self.y = self.y+self.yvel*self.s
+	if self.tar.x == self.x and self.tar.y == self.y then
+		table.insert(self.blocks, {x = self.tar.x, self.tar.y})
+		self.tar.x = math.floor(love.math.random() * hgrid)
+		self.tar.y = math.floor(love.math.random() * vgrid)
+		beep:play()
+	end
+	for i = table.getn(self.blocks), 1, -1 do
+		if i == 1 then
+			self.blocks[i].x = self.x
+			self.blocks[i].y = self.y
+		else
+			self.blocks[i].x = self.blocks[i-1].x
+			self.blocks[i].y = self.blocks[i-1].y
+		end
+	end
+	self.x = self.x+self.xvel
+	self.y = self.y+self.yvel
+	for i in ipairs(self.blocks) do
+		if self.x == self.blocks[i].x and self.y == self.blocks[i].y then
+			player:hardreset()
+			death:play()
+		end
+	end
 end
 
 function player:draw()
-	love.graphics.rectangle(self.mode, self.x, self.y, self.w, self.w)
+	love.graphics.setColor(0,1,0)
+	temp = 0
+	for i in  ipairs(self.blocks) do
+		temp = temp+1
+		love.graphics.rectangle(self.mode, self.blocks[i].x*self.w, self.blocks[i].y*self.w, self.w, self.w)
+	end
+	love.graphics.print(temp)
+	love.graphics.setColor(self.col.r, 0, 0)
+	love.graphics.rectangle(self.mode, self.tar.x * self.w, self.tar.y * self.w, self.w, self.w)
+	love.graphics.setColor(self.col.r, self.col.g, self.col.b)
+	love.graphics.rectangle(self.mode, self.x*self.w, self.y*self.w, self.w, self.w)
 end
 
 
 function love.load()
 	--love.graphics.set3D(true)
+	beep:play()
+	player:hardreset()
 end
 
 function love.update(dt)
@@ -114,7 +155,6 @@ function love.draw()
 	love.graphics.setBackgroundColor(bgCol.r, bgCol.g, bgCol.b)
 	--topscreen only works on 3ds, so look out
 	love.graphics.setScreen('top')
-	--love.graphics.rectangle("fill", 1, 1, 30, 30)
 	player:draw()
 	--bottom screen
 	--love.graphics.setScreen('bottom')
