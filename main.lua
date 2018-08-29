@@ -5,7 +5,7 @@ diff = 10
 frames = 0
 fps = 1/diff
 hgrid = 20
-vgrid = 14
+vgrid = 11
 bgCol = {
 	r = 0,
 	g = 0,
@@ -45,6 +45,8 @@ function player:hardreset()
 	self.x = 10
 	self.y = 10
 	self.blocks = {}
+	love.graphics.setScreen("top")
+	self.w = love.graphics.getWidth()/hgrid
 end
 
 function player:move(xvel, yvel)
@@ -57,11 +59,11 @@ function player:move(xvel, yvel)
 end
 
 function player:update()
-	if self.x > hgrid +4 then
+	if self.x > hgrid then
 		self.x = 0
 	end
 	if self.x < 0 then
-		self.x = hgrid+4
+		self.x = hgrid
 	end
 	if self.y > vgrid then
 		self.y = 0
@@ -71,7 +73,7 @@ function player:update()
 	end
 	if self.tar.x == self.x and self.tar.y == self.y then
 		table.insert(self.blocks, {x = self.x, y = self.y})
-		self.tar.x = math.floor(math.random() * (hgrid+4))
+		self.tar.x = math.floor(math.random() * (hgrid))
 		self.tar.y = math.floor(math.random() * vgrid)
 		beep:play()
 	end
