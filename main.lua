@@ -1,5 +1,11 @@
 beep = love.audio.newSource("beep.wav", "static")
 
+--dif determines fps, this can make the game faster and therefore harder
+diff = 10
+frames = 0
+fps = 1/diff
+
+
 bgCol = {
 	r = 0,
 	g = 0,
@@ -50,6 +56,18 @@ player = {
 
 ]]
 
+function player:reset()
+	self.xvel = 0
+	self.yvel = 0
+end
+
+function player:hardreset()
+	self.xvel = 0
+	self.yvel = 0
+	self.x = 1
+	self.y = 1
+	self.blocks = {}
+end
 
 function player:move(xvel, yvel)
 	self.xvel = xvel
@@ -84,15 +102,18 @@ function love.load()
 end
 
 function love.update(dt)
-	player:update()
-
+	if frames >= fps then
+		player:update()
+		frames = 0
+	end
+	frames = frames+dt
 
 end
 
 function love.draw()
 	love.graphics.setBackgroundColor(bgCol.r, bgCol.g, bgCol.b)
 	--topscreen only works on 3ds, so look out
-	love.graphics.setScreen('top')
+	--love.graphics.setScreen('top')
 	--love.graphics.rectangle("fill", 1, 1, 30, 30)
 	player:draw()
 	--bottom screen
@@ -161,9 +182,19 @@ function love.keypressed(key)
 	end
 	if (key == "a") then
 		player:move(1, 0)
-
 	end
-
+	if (key == "select") then
+		player:reset()
+	end
+	if (key == "lbutton") then
+		diff = diff - 10
+		if diff < 9 then
+			diff = 10
+		end
+	end
+	if (key == "rbutton") then
+		diff = diff + 10
+	end
 end
 
 function love.keyreleased(key)
