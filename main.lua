@@ -113,7 +113,7 @@ end
 function love.draw()
 	love.graphics.setBackgroundColor(bgCol.r, bgCol.g, bgCol.b)
 	--topscreen only works on 3ds, so look out
-	--love.graphics.setScreen('top')
+	love.graphics.setScreen('top')
 	--love.graphics.rectangle("fill", 1, 1, 30, 30)
 	player:draw()
 	--bottom screen
