@@ -33,33 +33,6 @@ player = {
 	}
 }
 
---[[
-	buttons for 3ds:
-	a
-	b
-	x
-	y
-	up
-	down
-	left
-	right
-	cpadup
-	cpaddown
-	cpadleft
-	cpadright
-	cstickup
-	cstickdown
-	cstickleft
-	cstickright
-	lbutton
-	rbutton
-	lzbutton
-	rzbutton
-	start
-	select
-
-
-]]
 
 function player:reset()
 	self.xvel = 0
@@ -84,11 +57,11 @@ function player:move(xvel, yvel)
 end
 
 function player:update()
-	if self.x > hgrid then
+	if self.x > hgrid +4 then
 		self.x = 0
 	end
 	if self.x < 0 then
-		self.x = hgrid
+		self.x = hgrid+4
 	end
 	if self.y > vgrid then
 		self.y = 0
@@ -97,9 +70,9 @@ function player:update()
 		self.y = vgrid
 	end
 	if self.tar.x == self.x and self.tar.y == self.y then
-		table.insert(self.blocks, {x = self.tar.x, self.tar.y})
-		self.tar.x = math.floor(love.math.random() * hgrid)
-		self.tar.y = math.floor(love.math.random() * vgrid)
+		table.insert(self.blocks, {x = self.x, y = self.y})
+		self.tar.x = math.floor(math.random() * (hgrid+4))
+		self.tar.y = math.floor(math.random() * vgrid)
 		beep:play()
 	end
 	for i = table.getn(self.blocks), 1, -1 do
@@ -115,30 +88,33 @@ function player:update()
 	self.y = self.y+self.yvel
 	for i in ipairs(self.blocks) do
 		if self.x == self.blocks[i].x and self.y == self.blocks[i].y then
-			player:hardreset()
 			death:play()
+			player:hardreset()
+			return
+			--love.event.quit()
 		end
 	end
 end
 
 function player:draw()
-	love.graphics.setColor(0,1,0)
+	love.graphics.setScreen('top')
+	love.graphics.setColor(0,255,0)
 	temp = 0
 	for i in  ipairs(self.blocks) do
 		temp = temp+1
+		x = self.blocks[i].x
+		y = self.blocks[i].y
 		love.graphics.rectangle(self.mode, self.blocks[i].x*self.w, self.blocks[i].y*self.w, self.w, self.w)
 	end
-	love.graphics.print(temp)
-	love.graphics.setColor(self.col.r, 0, 0)
+	love.graphics.setColor(self.col.r*255, 0, 0)
 	love.graphics.rectangle(self.mode, self.tar.x * self.w, self.tar.y * self.w, self.w, self.w)
-	love.graphics.setColor(self.col.r, self.col.g, self.col.b)
+	love.graphics.setColor(self.col.r*255, self.col.g*255, self.col.b*255)
 	love.graphics.rectangle(self.mode, self.x*self.w, self.y*self.w, self.w, self.w)
 end
 
 
 function love.load()
 	--love.graphics.set3D(true)
-	beep:play()
 	player:hardreset()
 end
 
@@ -154,7 +130,7 @@ end
 function love.draw()
 	love.graphics.setBackgroundColor(bgCol.r, bgCol.g, bgCol.b)
 	--topscreen only works on 3ds, so look out
-	love.graphics.setScreen('top')
+	--love.graphics.setScreen('top')
 	player:draw()
 	--bottom screen
 	--love.graphics.setScreen('bottom')
@@ -224,7 +200,7 @@ function love.keypressed(key)
 		player:move(1, 0)
 	end
 	if (key == "select") then
-		player:reset()
+		player:hardreset()
 	end
 	if (key == "lbutton") then
 		diff = diff - 10
@@ -235,8 +211,59 @@ function love.keypressed(key)
 	if (key == "rbutton") then
 		diff = diff + 10
 	end
+	if (key == "l") then
+		diff = diff - 10
+		if diff < 9 then
+			diff = 10
+		end
+	end
+	if (key == "r") then
+		diff = diff + 10
+	end
+	if (key == "lzbutton") then
+		diff = diff - 10
+		if diff < 9 then
+			diff = 10
+		end
+	end
+	if (key == "rzbutton") then
+		diff = diff + 10
+	end
 end
 
 function love.keyreleased(key)
 
 end
+
+
+
+
+
+
+--[[
+	buttons for 3ds:
+	a
+	b
+	x
+	y
+	up
+	down
+	left
+	right
+	cpadup
+	cpaddown
+	cpadleft
+	cpadright
+	cstickup
+	cstickdown
+	cstickleft
+	cstickright
+	lbutton
+	rbutton
+	lzbutton
+	rzbutton
+	start
+	select
+
+
+]]
