@@ -5,9 +5,9 @@ fly = {
 	y = 50,
 	sprite = love.graphics.newImage("data/fly.png"),
 	af = love.graphics.newQuad(0, 0, 512, 512, 1024, 512),
-	bf = love.graphics.newQuad(513, 0, 512, 512, 1024, 512),
+	bf = love.graphics.newQuad(512, 0, 512, 512, 1024, 512),
 	rot = 0,
-	scl = 9,
+	scl = 20,
 	anf = 0,
 	anc = false,
 	ans = 10,
@@ -89,9 +89,9 @@ function fly:draw()
 		end
 	end
 	if fly.anc then
-		love.graphics.draw(fly.sprite, fly.af, fly.sx, fly.sy, fly.rot, fly.scl, fly.scl)
+		love.graphics.draw(fly.sprite, fly.af, fly.sx, fly.sy, fly.rot, 0.2, 0.2)
 	else
-		love.graphics.draw(fly.sprite, fly.bf, fly.sx, fly.sy, fly.rot, fly.scl, fly.scl)
+		love.graphics.draw(fly.sprite, fly.bf, fly.sx, fly.sy, fly.rot, 1, 1)
 
 	end
 	
