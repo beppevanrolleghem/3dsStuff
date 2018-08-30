@@ -16,6 +16,7 @@ snake = {
 	frames = 0,
 	hgrid = 20,
 	vgrid = 11,
+	screen = "top",
 	bgCol = {
 		r = 0,
 		g = 0,
@@ -56,7 +57,7 @@ function snakeplayer:hardreset()
 	self.x = 10
 	self.y = 10
 	self.blocks = {}
-	love.graphics.setScreen("top")
+	love.graphics.setScreen(snake.screen)
 	self.w = love.graphics.getWidth()/snake.hgrid
 end
 
@@ -114,11 +115,10 @@ function snakeplayer:update(dt)
 end
 
 function snakeplayer:draw()
-	love.graphics.setScreen('top')
+	love.graphics.setScreen(snake.screen)
 	love.graphics.setColor(snake.bgCol.r, snake.bgCol.g, snake.bgCol.b)
 	love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 	love.graphics.setColor(0,255,0)
-	temp = 0
 	for i in  ipairs(self.blocks) do
 		love.graphics.rectangle(self.mode, self.blocks[i].x*self.w, self.blocks[i].y*self.w, self.w, self.w)
 	end
