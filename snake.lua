@@ -16,7 +16,8 @@ snake = {
 	frames = 0,
 	hgrid = 20,
 	vgrid = 11,
-	screen = "bottom",
+	screen = "top",
+	score = 0,
 	bgCol = {
 		r = 0,
 		g = 0,
@@ -59,6 +60,7 @@ function snakeplayer:hardreset()
 	self.blocks = {}
 	love.graphics.setScreen(snake.screen)
 	self.w = love.graphics.getWidth()/snake.hgrid
+	snake.score = 0
 end
 
 function snakeplayer:move(xvel, yvel)
@@ -89,6 +91,7 @@ function snakeplayer:update(dt)
 			self.tar.x = math.floor(math.random() * snake.hgrid)
 			self.tar.y = math.floor(math.random() * snake.vgrid)
 			snake.beep:play()
+			snake.score= snake.score + 1
 		end
 		for i = table.getn(self.blocks), 1, -1 do
 			if i == 1 then

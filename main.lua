@@ -4,6 +4,7 @@ require "swat"
 function love.load()
 	--love.graphics.set3D(true)
 	snakeplayer:hardreset()
+	swat:load()
 end
 
 
@@ -123,6 +124,9 @@ function love.keyreleased(key)
 
 end
 
+function love.mousepressed(a, b)
+	local x, y = love.mouse.getPosition()
+	fly:kill(x, y)
+end
 
-
-require("potion-compat")
+--require("potion-compat")

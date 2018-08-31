@@ -3,20 +3,24 @@ fly = {
 	sy = 0, --starty or current y
 	x = 50, --destination x
 	y = 50, --destination -y
+	width = 75,
+	height = 66,
 	sprite = love.graphics.newImage("data/fly.png"), --image
 	quad = love.graphics.newQuad(87, 40, 75, 66, 368, 195), --162 106
 	rot = 0, --rotation
 	scl = 20, --scale
-	alive = true, --is the fly alive
+	alive = false, --is the fly alive
 	ttl = 4, --time to live before the fly dies
 	tl = 0, --time lived
 	timer = false --flies only start living when they stop moving, this is to keep tracking that
 }
 
 swat = {
-	screen = "top",
+	beep = love.audio.newSource("data/beep.wav", "static"),
+	death = love.audio.newSource("data/death.wav", "static"),
+	screen = "bottom",
 	score = 0,
-	diff = 1, --difficulty
+	diff = .1, --difficulty
 	frames = 0,
 	width = 1,--set later width of screen
 	height = 1,--set later height of screen
@@ -38,15 +42,10 @@ end
 
 
 function swat:update( dt)
-	if swat.frames == swat.diff then
-
-		swat.frames = 0
-	end
-	swat.frames = swat.frames+dt
 	if fly.timer then
 		fly.tl = fly.tl + dt
 	end
-	if fly.tl >= fly.ttl then
+	if fly.tl >= (fly.ttl - (swat.score * swat.diff)) then
 		swat.score = swat.score -1
 		fly:newFly()
 	end
@@ -72,6 +71,7 @@ function swat:update( dt)
 		end
 	else 
 		--make a new fly
+		swat.beep:play()
 		fly:newFly()
 	end
 end
@@ -79,16 +79,18 @@ end
 function fly:draw()
 	love.graphics.setScreen(swat.screen)
 	love.graphics.setColor(swat.bgCol.r, swat.bgCol.g, swat.bgCol.b)
-	love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+	--love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 	if fly.alive then
 		love.graphics.draw(fly.sprite, fly.quad, fly.sx, fly.sy, 0, 0, 0,0,0)
 	end
 	
+	love.graphics.setColor(0,255,0)
+	--love.graphics.print("score: ".. swat.score)
 end
 
 function fly:newFly()
-	fly.x = math.floor(math.random() * swat.width)
-	fly.y = math.floor(math.random() * swat.height)
+	fly.x = math.floor(math.random() * swat.width - fly.width)
+	fly.y = math.floor(math.random() * swat.height - fly.height)
 	temp = math.floor(math.random() * 4) + 1
 	if temp <= 1 then
 		fly.sx = math.floor(math.random() * swat.width)
@@ -110,3 +112,46 @@ function fly:newFly()
 	fly.anf = 0
 end
 
+--[[
+
+fly = {
+	sx = 0, --startx or current x
+	sy = 0, --starty or current y
+	x = 50, --destination x
+	y = 50, --destination -y
+	width = 75,
+	height = 66,
+	sprite = love.graphics.newImage("data/fly.png"), --image
+	quad = love.graphics.newQuad(87, 40, 75, 66, 368, 195), --162 106
+	rot = 0, --rotation
+	scl = 20, --scale
+	alive = true, --is the fly alive
+	ttl = 4, --time to live before the fly dies
+	tl = 0, --time lived
+	timer = false --flies only start living when they stop moving, this is to keep tracking that
+}
+
+
+]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function fly:kill(x, y)
+	if x > fly.sx and x < fly.sx+fly.width and y > fly.sy and y < fly.sy+fly.height then
+
+		fly:newFly()
+		swat.score = swat.score+1
+		return
+	end
+end
