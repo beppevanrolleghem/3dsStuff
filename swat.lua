@@ -4,8 +4,8 @@ fly = {
 	x = 50,
 	y = 50,
 	sprite = love.graphics.newImage("data/fly.png"),
-	af = love.graphics.newQuad(0, 0, 512, 512, 1024, 512),
-	bf = love.graphics.newQuad(512, 0, 512, 512, 1024, 512),
+	af = love.graphics.newQuad(87, 40, 75, 66, 368, 195), --162 106
+	af = love.graphics.newQuad(87, 40, 75, 66, 368, 195), --162 106
 	rot = 0,
 	scl = 20,
 	anf = 0,
@@ -120,3 +120,4 @@ function fly:newFly()
 	fly.timer = false
 	fly.anf = 0
 end
+
