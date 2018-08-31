@@ -16,9 +16,7 @@ end
 
 
 function love.draw()
-	love.graphics.setScreen('top')
 	snakeplayer:draw()
-	love.graphics.setScreen('bottom')
 	fly:draw()
 end
 
@@ -127,3 +125,4 @@ end
 
 
 
+require("potion-compat")

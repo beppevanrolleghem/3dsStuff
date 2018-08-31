@@ -1,29 +1,26 @@
 fly = {
-	sx = 0,
-	sy = 0,
-	x = 50,
-	y = 50,
-	sprite = love.graphics.newImage("data/fly.png"),
-	af = love.graphics.newQuad(87, 40, 75, 66, 368, 195), --162 106
-	af = love.graphics.newQuad(87, 40, 75, 66, 368, 195), --162 106
-	rot = 0,
-	scl = 20,
-	anf = 0,
-	anc = false,
-	ans = 10,
-	alive = true,
-	ttl = 4,
-	tl = 0,
-	timer = false
+	sx = 0, --startx or current x
+	sy = 0, --starty or current y
+	x = 50, --destination x
+	y = 50, --destination -y
+	sprite = love.graphics.newImage("data/fly.png"), --image
+	quad = love.graphics.newQuad(87, 40, 75, 66, 368, 195), --162 106
+	rot = 0, --rotation
+	scl = 20, --scale
+	alive = true, --is the fly alive
+	ttl = 4, --time to live before the fly dies
+	tl = 0, --time lived
+	timer = false --flies only start living when they stop moving, this is to keep tracking that
 }
 
 swat = {
+	screen = "top",
 	score = 0,
-	diff = 1,
+	diff = 1, --difficulty
 	frames = 0,
-	width = 1,
-	height = 1,
-	bgCol = {
+	width = 1,--set later width of screen
+	height = 1,--set later height of screen
+	bgCol = { --background colors of screen
 		r = 255,
 		g = 255,
 		b = 255
@@ -31,7 +28,7 @@ swat = {
 }
 
 function swat:load()
-	love.graphics.setScreen("bottom")
+	love.graphics.setScreen(swat.screen)
 	swat.width = love.graphics.getWidth()
 	swat.height = love.graphics.getHeight()
 	swat.score = 0
@@ -46,9 +43,12 @@ function swat:update( dt)
 		swat.frames = 0
 	end
 	swat.frames = swat.frames+dt
-	fly.anf = fly.anf +dt
 	if fly.timer then
 		fly.tl = fly.tl + dt
+	end
+	if fly.tl >= fly.ttl then
+		swat.score = swat.score -1
+		fly:newFly()
 	end
 	if fly.alive then
 		--draw the existing fly if he's not on path, move him on his path.
@@ -77,22 +77,11 @@ function swat:update( dt)
 end
 
 function fly:draw()
-	love.graphics.setScreen("bottom")
+	love.graphics.setScreen(swat.screen)
 	love.graphics.setColor(swat.bgCol.r, swat.bgCol.g, swat.bgCol.b)
 	love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-	if fly.anf > fly.ans then
-		fly.anf = 0
-		if fly.anc then
-			fly.anc = false
-		else
-			fly.anc = true
-		end
-	end
-	if fly.anc then
-		love.graphics.draw(fly.sprite, fly.af, fly.sx, fly.sy, fly.rot, 0.2, 0.2)
-	else
-		love.graphics.draw(fly.sprite, fly.bf, fly.sx, fly.sy, fly.rot, 1, 1)
-
+	if fly.alive then
+		love.graphics.draw(fly.sprite, fly.quad, fly.sx, fly.sy, 0, 0, 0,0,0)
 	end
 	
 end
