@@ -1,10 +1,10 @@
-require "snake"
+--[[require "snake"
 require "swat"
 
+
+
 function love.load()
-	--love.graphics.set3D(true)
-	snakeplayer:hardreset()
-	swat:load()
+
 end
 
 
@@ -128,5 +128,36 @@ function love.mousepressed(a, b)
 	local x, y = love.mouse.getPosition()
 	fly:kill(x, y)
 end
+]]
 
---require("potion-compat")
+
+
+require "gamemanager"
+
+
+function love.load()
+	man:load()
+end
+
+function love.update(dt)
+	man:update(dt)
+end
+
+function love.draw()
+	man:draw()
+end
+
+function love.keypressed(key)
+	man:keypressed(key)
+end
+
+function love.keyreleased(key)
+	man:keyreleased(key)
+end
+
+function love.mousepressed(x, y)
+	man:mousepressed(x, y)
+end
+
+--this is for debugging on pc
+require("potion-compat")

@@ -41,6 +41,11 @@ function swat:load()
 end
 
 
+function swat:mousepressed(x, y)
+	fly:kill(x, y)
+end
+
+
 function swat:update( dt)
 	if fly.timer then
 		fly.tl = fly.tl + dt

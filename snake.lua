@@ -63,6 +63,94 @@ function snakeplayer:hardreset()
 	snake.score = 0
 end
 
+function snakeplayer:keypressed(key)
+	if (key == "start") then
+		--gamemanager:quit()
+		gamemanager:pause()
+	end
+	if (key == "up") then
+		snakeplayer:move(0, -1)
+	end
+	if (key == "down") then
+		snakeplayer:move(0, 1)
+
+	end
+	if (key == "left") then
+		snakeplayer:move(-1, 0)
+
+	end
+	if (key == "right") then
+		snakeplayer:move(1, 0)
+
+	end
+	if (key == "cstickup") then
+		snakeplayer:move(0, -1)
+	end
+	if (key == "cstickdown") then
+		snakeplayer:move(0, 1)
+
+	end
+	if (key == "cstickleft") then
+		snakeplayer:move(-1, 0)
+
+	end
+	if (key == "cstickright") then
+		snakeplayer:move(1, 0)
+
+	end
+	if (key == "cpadup") then
+		snakeplayer:move(0, -1)
+	end
+	if (key == "cpaddown") then
+		snakeplayer:move(0, 1)
+
+	end
+	if (key == "cpadleft") then
+		snakeplayer:move(-1, 0)
+
+	end
+	if (key == "cpadright") then
+		snakeplayer:move(1, 0)
+
+	end
+	if (key == "x") then
+		snakeplayer:move(0, -1)
+	end
+	if (key == "b") then
+		snakeplayer:move(0, 1)
+
+	end
+	if (key == "y") then
+		snakeplayer:move(-1, 0)
+
+	end
+	if (key == "a") then
+		snakeplayer:move(1, 0)
+	end
+
+	if (key == "select") then
+		--snakeplayer:hardreset()
+	end
+	if (key == "lbutton") then
+		
+	end
+	if (key == "rbutton") then
+		
+	end
+	if (key == "l") then
+		
+	end
+	if (key == "r") then
+		
+	end
+	if (key == "lzbutton") then
+		
+	end
+	if (key == "rzbutton") then
+		
+	end
+end
+
 function snakeplayer:move(xvel, yvel)
 	if self.xvel == -xvel and self.yvel == -yvel then
 
