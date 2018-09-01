@@ -1,7 +1,9 @@
-# Experimental
+# I don't have a name yet
 
-So i'm changing my plans right now, this experimental branch is going to test out how it would work if i ran 2 games seperatly on 2 screens and the player has to deal with both.
+this game is supposed to be a minigame collection type of deal like wario ware. at this time i've started to set it that the game is played on both screens at the same time, making both easy games a lot harder. 
 
-# whats the second game
+# todo
 
-probably gonna be swatting flies from wario ware but on the bottom screen
+-menu's
+-interactivity between the games (shared lives, and shared resets)
+-more games
