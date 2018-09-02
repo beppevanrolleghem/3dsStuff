@@ -132,7 +132,7 @@ end
 
 
 
-require "gamemanager"
+require "lib.helpers.gamemanager"
 
 
 function love.load()
@@ -160,4 +160,4 @@ function love.mousepressed(x, y)
 end
 
 --this is for debugging on pc
-require("potion-compat")
+require("lib.helpers.potion-compat")

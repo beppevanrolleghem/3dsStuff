@@ -1,9 +1,9 @@
-require "ui"
+require "lib.tools.ui"
 
 
 
-require "snake"
-require "swat"
+require "lib.minigames.snake"
+require "lib.minigames.swat"
 
 
 --[[
